@@ -35,7 +35,8 @@ npx playwright test
 npx playwright show-report
 ```
 
-> The Salesforce tests require credentials and a locally saved session, which will be documented in upcoming steps.
+> The Salesforce tests require credentials and a locally saved session, which will be documented in upcoming steps."
+> Tests currently run on Chromium only. Other browsers are disabled in `playwright.config.ts`.
 
 ## Roadmap
 

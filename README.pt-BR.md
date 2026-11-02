@@ -35,6 +35,7 @@ npx playwright show-report
 ```
 
 > Os testes do Salesforce exigem credenciais e sessão local, que serão documentadas nas próximas etapas.
+> Os testes rodam atualmente apenas no Chromium. Os outros navegadores estão desativados no `playwright.config.ts`.
 
 ## Roadmap
 
