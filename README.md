@@ -19,31 +19,84 @@ End-to-end test automation project for the Salesforce CRM, built with **Playwrig
 - Node.js
 - GitHub Actions
 
+## Project Structure
+
+```
+Salesforce_Automation/
+├── .github/
+│   └── workflows/      # GitHub Actions (CI)
+├── playwright/
+│   └── .auth/          # Saved Salesforce session (git-ignored)
+├── test-data/          # Test data builders
+├── tests/              # Test files (*.spec.ts)
+├── .env.example        # Environment variables template
+├── .gitignore
+├── package.json
+├── playwright.config.ts
+├── README.md
+└── README.pt-BR.md
+```
+
 ## Getting Started
 
+### 1. Install dependencies
+
 ```bash
-# Install dependencies
 npm install
-
-# Install Playwright browsers
 npx playwright install
+```
 
-# Run the tests
+### 2. Configure environment variables
+
+Copy `.env.example` to `.env` and fill in the values:
+
+```
+SF_BASE_URL=       # Salesforce login URL (my.salesforce.com)
+SF_LIGHTNING_URL=  # Lightning URL used by the tests (lightning.force.com), no trailing slash
+SF_USERNAME=       # Salesforce user
+SF_PASSWORD=       # Salesforce password
+```
+
+> `SF_USERNAME` and `SF_PASSWORD` are not used by the tests yet. They are reserved for an automated login in a future step.
+
+The `.env` file is git-ignored. Never commit credentials. Use a **Sandbox or Developer Edition** org, not production.
+
+### 3. Record the Salesforce session
+
+Tests reuse a saved login session. Salesforce asks for a verification code on new devices, so the session is recorded manually:
+
+```bash
+npx playwright codegen --save-storage=playwright/.auth/user.json <YOUR_SALESFORCE_LOGIN_URL>
+```
+
+Log in, enter the verification code, wait for Lightning to load and close the browser. The session file is git-ignored.
+
+When the session expires, tests are redirected to the login page and fail. Repeat this step to renew it.
+
+### 4. Run the tests
+
+```bash
+# Run all tests
 npx playwright test
+
+# Run with the browser visible
+npx playwright test --headed
 
 # Open the report
 npx playwright show-report
 ```
 
-> The Salesforce tests require credentials and a locally saved session, which will be documented in upcoming steps."
 > Tests currently run on Chromium only. Other browsers are disabled in `playwright.config.ts`.
+>
+> Each run creates real records in the Salesforce org.
 
 ## Roadmap
 
 - [x] Playwright + TypeScript setup
 - [x] GitHub repository with basic CI
-- [ ] Login with saved session (storageState)
-- [ ] Lead creation test
+- [x] Login with saved session (storageState)
+- [x] Lead creation test
+- [x] Test data builder
 - [ ] Page Object Model and fixtures
-- [ ] Complete CI/CD pipeline
+- [ ] Complete CI/CD pipeline (including automated authentication)
 - [ ] Accounts and Opportunities
