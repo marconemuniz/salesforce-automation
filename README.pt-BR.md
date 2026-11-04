@@ -25,6 +25,7 @@ Projeto de automação de testes end-to-end para o CRM Salesforce, usando **Play
 Salesforce_Automation/
 ├── .github/
 │   └── workflows/      # GitHub Actions (CI)
+├── fixtures/           # Fixtures personalizadas do Playwright
 ├── pages/              # Page Objects (uma classe por tela)
 ├── playwright/
 │   └── .auth/          # Sessão salva do Salesforce (ignorada pelo Git)
@@ -98,6 +99,6 @@ npx playwright show-report
 - [x] Login com sessão salva (storageState)
 - [x] Teste de criação de Lead
 - [x] Construtor de massa de dados
-- [ ] Page Object Model e fixtures
+- [x] Page Object Model e fixtures
 - [ ] Pipeline de CI/CD completo (incluindo autenticação automatizada)
 - [ ] Contas e Oportunidades
