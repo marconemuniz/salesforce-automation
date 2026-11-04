@@ -25,6 +25,7 @@ End-to-end test automation project for the Salesforce CRM, built with **Playwrig
 Salesforce_Automation/
 ├── .github/
 │   └── workflows/      # GitHub Actions (CI)
+├── pages/              # Page Objects (one class per screen)
 ├── playwright/
 │   └── .auth/          # Saved Salesforce session (git-ignored)
 ├── test-data/          # Test data builders

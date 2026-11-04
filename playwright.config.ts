@@ -26,16 +26,17 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: process.env.SF_LIGHTNING_URL,
-    storageState: 'playwright/.auth/user.json',     
+    storageState: 'playwright/.auth/user.json',
+    locale: 'en-US',
     trace: 'on-first-retry',
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
+    name: 'chromium',
+    use: { ...devices['Desktop Chrome'] },
+    },  
 
     // {
     //   name: 'firefox',

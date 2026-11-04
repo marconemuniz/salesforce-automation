@@ -25,6 +25,7 @@ Projeto de automação de testes end-to-end para o CRM Salesforce, usando **Play
 Salesforce_Automation/
 ├── .github/
 │   └── workflows/      # GitHub Actions (CI)
+├── pages/              # Page Objects (uma classe por tela)
 ├── playwright/
 │   └── .auth/          # Sessão salva do Salesforce (ignorada pelo Git)
 ├── test-data/          # Construtores de massa de dados
