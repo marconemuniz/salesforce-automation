@@ -4,6 +4,7 @@ import { Lead } from '../test-data/lead.data';
 export class LeadsPage {
   readonly page: Page;
   readonly newButton: Locator;
+  readonly firstNameInput: Locator;
   readonly lastNameInput: Locator;
   readonly companyInput: Locator;
   readonly saveButton: Locator;
@@ -11,6 +12,7 @@ export class LeadsPage {
   constructor(page: Page) {
     this.page = page;
     this.newButton = page.getByRole('button', { name: 'New' });
+    this.firstNameInput = page.getByRole('textbox', { name: 'First Name' });
     this.lastNameInput = page.getByRole('textbox', { name: 'Last Name' });
     this.companyInput = page.getByRole('textbox', { name: 'Company' });
     this.saveButton = page.getByRole('button', { name: 'Save', exact: true });
@@ -22,12 +24,13 @@ export class LeadsPage {
 
   async create(lead: Lead) {
     await this.newButton.click();
+    await this.firstNameInput.fill(lead.firstName);
     await this.lastNameInput.fill(lead.lastName);
     await this.companyInput.fill(lead.company);
     await this.saveButton.click();
   }
 
   createdToast(lead: Lead): Locator {
-    return this.page.getByText(`Lead "${lead.lastName}" was created.`);
+    return this.page.getByText(`Lead "${lead.firstName} ${lead.lastName}" was created.`);
   }
 }
