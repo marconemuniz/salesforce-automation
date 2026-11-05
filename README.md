@@ -31,6 +31,7 @@ Salesforce_Automation/
 │   └── .auth/          # Saved Salesforce session (git-ignored)
 ├── test-data/          # Test data builders
 ├── tests/              # Test files (*.spec.ts)
+├── utils/              # Shared helpers (e.g. env validation)
 ├── .env.example        # Environment variables template
 ├── .gitignore
 ├── package.json

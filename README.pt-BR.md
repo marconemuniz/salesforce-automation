@@ -31,6 +31,7 @@ Salesforce_Automation/
 │   └── .auth/          # Sessão salva do Salesforce (ignorada pelo Git)
 ├── test-data/          # Construtores de massa de dados
 ├── tests/              # Arquivos de teste (*.spec.ts)
+├── utils/              # Utilitários compartilhados (ex.: validação de env)
 ├── .env.example        # Modelo das variáveis de ambiente
 ├── .gitignore
 ├── package.json
