@@ -40,3 +40,27 @@ export async function getAccessToken(): Promise<SalesforceToken> {
 
   return { accessToken: data.access_token, instanceUrl: data.instance_url };
 }
+
+export async function getFrontdoorUrl(
+  { accessToken, instanceUrl }: SalesforceToken,
+  redirectUri = 'lightning/page/home',
+): Promise<string> {
+  const response = await fetch(`${instanceUrl}/services/oauth2/singleaccess`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: new URLSearchParams({ redirect_uri: redirectUri }),
+  });
+
+  const data = (await response.json()) as Record<string, string>;
+
+  if (!response.ok || !data.frontdoor_uri) {
+    throw new Error(
+      `Frontdoor URL request failed (${response.status}): ${JSON.stringify(data)}`,
+    );
+  }
+
+  return data.frontdoor_uri;
+}
