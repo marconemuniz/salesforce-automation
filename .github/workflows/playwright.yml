@@ -4,6 +4,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 jobs:
   test:
     timeout-minutes: 60
@@ -19,6 +20,8 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: npx playwright test
+      env:
+        SF_LIGHTNING_URL: ${{ vars.SF_LIGHTNING_URL }}
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

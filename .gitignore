@@ -9,3 +9,8 @@ node_modules/
 # Credenciais e sessão (NUNCA versionar)
 .env
 playwright/.auth/
+
+# Chaves privadas (NUNCA versionar)
+*.key
+*.pem
+certs/
