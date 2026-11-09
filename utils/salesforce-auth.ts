@@ -4,13 +4,18 @@ import { sign } from "jsonwebtoken";
 
 export async function loginWithJwt(page: Page, request: APIRequestContext) {
   // Step 1: sign the JWT with the private key
+
+  const privateKey = process.env.SF_PRIVATE_KEY
+    ? process.env.SF_PRIVATE_KEY.replace(/\\n/g, "\n")
+    : readFileSync(process.env.SF_PRIVATE_KEY_PATH!, "utf8");
+
   const assertion = sign(
     {
       iss: process.env.SF_CLIENT_ID!,
       sub: process.env.SF_USERNAME!,
       aud: process.env.SF_LOGIN_URL!,
     },
-    readFileSync(process.env.SF_PRIVATE_KEY_PATH!, "utf8"),
+    privateKey,
     { algorithm: "RS256", expiresIn: 180 },
   );
 
