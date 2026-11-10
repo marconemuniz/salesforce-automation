@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import { requireEnv } from "./utils/env";
 
 /**
  * Read environment variables from file.
@@ -25,7 +26,7 @@ export default defineConfig({
   reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    baseURL: process.env.SF_LIGHTNING_URL,
+    baseURL: requireEnv("SF_LIGHTNING_URL"),
     locale: "en-US",
     trace: process.env.CI ? "off" : "on-first-retry",
     screenshot: "only-on-failure",

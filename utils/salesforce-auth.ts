@@ -1,19 +1,20 @@
 import { Page, APIRequestContext, expect } from "@playwright/test";
 import { readFileSync } from "fs";
 import { sign } from "jsonwebtoken";
+import { requireEnv } from "./env";
 
 export async function loginWithJwt(page: Page, request: APIRequestContext) {
   // Step 1: sign the JWT with the private key
 
   const privateKey = process.env.SF_PRIVATE_KEY
     ? process.env.SF_PRIVATE_KEY.replace(/\\n/g, "\n")
-    : readFileSync(process.env.SF_PRIVATE_KEY_PATH!, "utf8");
+    : readFileSync(requireEnv("SF_PRIVATE_KEY_PATH"), "utf8");
 
   const assertion = sign(
     {
-      iss: process.env.SF_CLIENT_ID!,
-      sub: process.env.SF_USERNAME!,
-      aud: process.env.SF_LOGIN_URL!,
+      iss: requireEnv("SF_CLIENT_ID"),
+      sub: requireEnv("SF_USERNAME"),
+      aud: requireEnv("SF_LOGIN_URL"),
     },
     privateKey,
     { algorithm: "RS256", expiresIn: 180 },
@@ -21,7 +22,7 @@ export async function loginWithJwt(page: Page, request: APIRequestContext) {
 
   // Step 2: exchange the JWT for an access token
   const tokenResponse = await request.post(
-    `${process.env.SF_LOGIN_URL}/services/oauth2/token`,
+    `${requireEnv("SF_LOGIN_URL")}/services/oauth2/token`,
     {
       form: {
         grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
