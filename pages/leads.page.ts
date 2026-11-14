@@ -20,11 +20,23 @@ export class LeadsPage {
     await this.page.goto("/lightning/o/Lead/list?filterName=__Recent");
   }
 
-  async create(lead: Lead) {
+  async openNewForm() {
     await this.newButton.click();
+  }
+
+  async fill(lead: Lead) {
     await this.lastNameInput.fill(lead.lastName);
     await this.companyInput.fill(lead.company);
+  }
+
+  async save() {
     await this.saveButton.click();
+  }
+
+  async create(lead: Lead) {
+    await this.openNewForm();
+    await this.fill(lead);
+    await this.save();
   }
 
   createdToast(lead: Lead): Locator {
