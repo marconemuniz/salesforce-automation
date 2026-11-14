@@ -1,12 +1,10 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../fixtures/test-fixtures";
 import { loginWithJwt } from "../utils/salesforce-auth";
 import { buildLead } from "../test-data/lead.data";
-import { LeadsPage } from "../pages/leads.page";
 
-test("should create a lead", async ({ page, request }) => {
+test("should create a lead", async ({ page, request, leadsPage }) => {
   await loginWithJwt(page, request);
 
-  const leadsPage = new LeadsPage(page);
   const lead = buildLead();
 
   await leadsPage.open();
