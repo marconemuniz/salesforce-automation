@@ -1,20 +1,16 @@
 import { test, expect } from "@playwright/test";
 import { loginWithJwt } from "../utils/salesforce-auth";
 import { buildLead } from "../test-data/lead.data";
+import { LeadsPage } from "../pages/leads.page";
 
 test("should create a lead", async ({ page, request }) => {
   await loginWithJwt(page, request);
 
+  const leadsPage = new LeadsPage(page);
   const lead = buildLead();
 
-  await page.goto("/lightning/o/Lead/list?filterName=__Recent");
+  await leadsPage.open();
+  await leadsPage.create(lead);
 
-  await page.getByRole("button", { name: "New" }).click();
-  await page.getByRole("textbox", { name: "Last Name" }).fill(lead.lastName);
-  await page.getByRole("textbox", { name: "Company" }).fill(lead.company);
-  await page.getByRole("button", { name: "Save", exact: true }).click();
-
-  await expect(
-    page.getByText(`Lead "${lead.lastName}" was created.`),
-  ).toBeVisible();
+  await expect(leadsPage.createdToast(lead)).toBeVisible();
 });
