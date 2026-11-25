@@ -57,6 +57,15 @@ export async function loginWithJwt(page: Page, request: APIRequestContext) {
   const { frontdoor_uri } = await frontdoorResponse.json();
 
   // Step 4: open Salesforce already logged in
-  await page.goto(frontdoor_uri);
-  await page.waitForURL(/lightning\.force\.com/);
+  try {
+    await page.goto(frontdoor_uri);
+    await page.waitForURL(/lightning\.force\.com/);
+  } catch (error) {
+    const reason = (error as Error).message
+      .split("\n")[0]
+      .replace(/https?:\/\/\S+/g, "<url>");
+    throw new Error(
+      `Frontdoor login failed: ${reason}. Last page: ${page.url().split("?")[0]}`,
+    );
+  }
 }
