@@ -2,8 +2,12 @@ import { test, expect } from "../fixtures/test-fixtures";
 import { buildLead } from "../test-data/lead.data";
 
 test.describe("Lead form", () => {
-  test("should create a lead with required fields", async ({ leadsPage }) => {
+  test("should create a lead with required fields", async ({
+    leadsPage,
+    leadCleanup,
+  }) => {
     const lead = buildLead();
+    leadCleanup.track(lead);
 
     await leadsPage.open();
     await leadsPage.create(lead);

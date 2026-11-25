@@ -3,9 +3,15 @@ import { readFileSync } from "fs";
 import { sign } from "jsonwebtoken";
 import { requireEnv } from "./env";
 
-export async function loginWithJwt(page: Page, request: APIRequestContext) {
-  // Step 1: sign the JWT with the private key
+export interface SalesforceToken {
+  accessToken: string;
+  instanceUrl: string;
+}
 
+export async function getAccessToken(
+  request: APIRequestContext,
+): Promise<SalesforceToken> {
+  // Step 1: sign the JWT with the private key
   const privateKey = process.env.SF_PRIVATE_KEY
     ? process.env.SF_PRIVATE_KEY.replace(/\\n/g, "\n")
     : readFileSync(requireEnv("SF_PRIVATE_KEY_PATH"), "utf8");
@@ -33,11 +39,17 @@ export async function loginWithJwt(page: Page, request: APIRequestContext) {
   expect(tokenResponse.ok(), await tokenResponse.text()).toBeTruthy();
   const { access_token, instance_url } = await tokenResponse.json();
 
+  return { accessToken: access_token, instanceUrl: instance_url };
+}
+
+export async function loginWithJwt(page: Page, request: APIRequestContext) {
+  const { accessToken, instanceUrl } = await getAccessToken(request);
+
   // Step 3: exchange the token for a single-use frontdoor URL
   const frontdoorResponse = await request.post(
-    `${instance_url}/services/oauth2/singleaccess`,
+    `${instanceUrl}/services/oauth2/singleaccess`,
     {
-      headers: { Authorization: `Bearer ${access_token}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
       form: { redirect_uri: "lightning/page/home" },
     },
   );
