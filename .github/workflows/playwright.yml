@@ -26,6 +26,7 @@ jobs:
           SF_CLIENT_ID: ${{ secrets.SF_CLIENT_ID }}
           SF_USERNAME: ${{ secrets.SF_USERNAME }}
           SF_PRIVATE_KEY: ${{ secrets.SF_PRIVATE_KEY }}
+          SF_API_VERSION: ${{ vars.SF_API_VERSION }}
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
