@@ -17,7 +17,10 @@ export class LeadApi {
     const response = await this.api.get(`${this.basePath}/query`, {
       params: { q: soql },
     });
-    expect(response.ok(), await response.text()).toBeTruthy();
+    expect(
+      response.ok(),
+      `${response.status()} ${new URL(response.url()).pathname} ${await response.text()}`,
+    ).toBeTruthy();
 
     const body = await response.json();
     return body.records.map((record: { Id: string }) => record.Id);
